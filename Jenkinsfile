@@ -5,28 +5,28 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Build Docker Image"
-                bat "docker build -t kubdemoapp:v1 ."
+                sh "docker build -t kubdemoapp:v1 ."
             }
         }
         stage('Docker Login') {
             steps {
-                  bat 'docker login -u indupriyasanga -p Indu@2006'
+                  sh 'docker login -u indupriyasanga -p Indu@2006'
                 }
             }
         stage('push Docker Image to Docker Hub') {
             steps {
                 echo "push Docker Image to Docker Hub"
-                bat "docker tag kubdemoapp:v1 indupriyasanga/flaskapp:kubeimage1"               
+                sh "docker tag kubdemoapp:v1 indupriyasanga/flaskapp:kubeimage1"               
                     
-                bat "docker push indupriyasanga/flaskapp:kubeimage1"
+                sh "docker push indupriyasanga/flaskapp:kubeimage1"
                 
             }
         }
         stage('Deploy to Kubernetes') { 
             steps { 
                     // apply deployment & service 
-                    bat 'kubectl apply -f deployment.yaml --validate=false' 
-                    bat 'kubectl apply -f service.yaml' 
+                    sh 'kubectl apply -f deployment.yaml --validate=false' 
+                    sh 'kubectl apply -f service.yaml' 
             } 
         }
     }
